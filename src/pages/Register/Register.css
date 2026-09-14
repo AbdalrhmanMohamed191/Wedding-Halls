@@ -1,0 +1,13 @@
+
+.register-container {
+  max-width: 500px;
+}
+
+.register-container .auth-card {
+  padding-top: 34px;
+}
+
+.register-container .auth-header {
+  margin-bottom: 26px;
+}
+

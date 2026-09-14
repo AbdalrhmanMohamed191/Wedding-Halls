@@ -1,0 +1,617 @@
+/* =========================================================
+   WEDORA - HOW IT WORKS
+   Premium Light Editorial Style
+========================================================= */
+
+.how-page {
+  width: 100%;
+  background: #faf8f5;
+  color: #211c18;
+  overflow: hidden;
+}
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.how-eyebrow {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #b8874a;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.how-hero {
+  position: relative;
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+  background-image: url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2200&q=90");
+  background-size: cover;
+  background-position: center;
+}
+
+.how-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(25, 20, 16, 0.82) 0%,
+      rgba(25, 20, 16, 0.57) 42%,
+      rgba(25, 20, 16, 0.16) 100%
+    );
+}
+
+.how-hero-content {
+  position: relative;
+  z-index: 2;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 100px 50px;
+  color: #fff;
+}
+
+.how-hero .how-eyebrow {
+  color: #d8b27c;
+}
+
+.how-hero h1 {
+  max-width: 760px;
+  margin: 0 0 24px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 6vw, 82px);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -2px;
+}
+
+.how-hero p {
+  max-width: 570px;
+  margin: 0 0 34px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.how-hero-btn,
+.how-final-btn,
+.how-owner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 27px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: 0.25s ease;
+}
+
+.how-hero-btn {
+  background: #fff;
+  color: #211c18;
+}
+
+.how-hero-btn:hover {
+  background: #b8874a;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.how-intro {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 110px 0;
+  display: grid;
+  grid-template-columns: 0.7fr 1.8fr;
+  gap: 80px;
+  border-bottom: 1px solid #ddd4ca;
+}
+
+.how-intro-label span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #8d8278;
+}
+
+.how-intro-content h2,
+.how-section-heading h2,
+.how-experience-content h2,
+.how-owners-content h2,
+.how-final h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+}
+
+.how-intro-content h2 {
+  max-width: 750px;
+  font-size: clamp(42px, 5vw, 68px);
+}
+
+.how-intro-content p {
+  max-width: 670px;
+  margin: 30px 0 0;
+  color: #766d65;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+.how-steps-section {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 120px 0;
+}
+
+.how-section-heading {
+  margin-bottom: 75px;
+}
+
+.how-section-heading h2 {
+  font-size: clamp(42px, 5vw, 65px);
+}
+
+.how-steps {
+  border-top: 1px solid #dcd3c9;
+}
+
+.how-step {
+  display: grid;
+  grid-template-columns: 100px 1px 1fr;
+  gap: 35px;
+  padding: 38px 0;
+  border-bottom: 1px solid #dcd3c9;
+}
+
+.how-step-number {
+  color: #b8874a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+}
+
+.how-step-line {
+  width: 1px;
+  height: 100%;
+  background: #d6cdc3;
+}
+
+.how-step-content {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.65fr) 1fr;
+  gap: 60px;
+}
+
+.how-step-content h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 27px;
+  font-weight: 400;
+}
+
+.how-step-content p {
+  max-width: 560px;
+  margin: 0;
+  color: #766d65;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   EXPERIENCE
+========================================================= */
+
+.how-experience {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 650px;
+  background: #eee5da;
+}
+
+.how-experience-image {
+  position: relative;
+  min-height: 600px;
+}
+
+.how-experience-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.how-image-card {
+  position: absolute;
+  left: 35px;
+  bottom: 35px;
+  width: 230px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.how-image-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #b8874a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.how-image-card strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.how-experience-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px clamp(40px, 7vw, 110px);
+}
+
+.how-experience-content h2 {
+  font-size: clamp(42px, 5vw, 64px);
+}
+
+.how-experience-content p {
+  max-width: 530px;
+  margin: 28px 0 0;
+  color: #6e655d;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.how-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  margin-top: 35px;
+  color: #211c18;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  border-bottom: 1px solid #b8874a;
+  padding-bottom: 7px;
+}
+
+.how-text-link span {
+  color: #b8874a;
+  font-size: 18px;
+  transition: 0.2s ease;
+}
+
+.how-text-link:hover span {
+  transform: translateX(5px);
+}
+
+/* =========================================================
+   BENEFITS
+========================================================= */
+
+.how-benefits {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 120px 0;
+}
+
+.how-section-heading.centered {
+  text-align: center;
+}
+
+.how-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid #dcd3c9;
+  border-bottom: 1px solid #dcd3c9;
+}
+
+.how-benefit {
+  min-height: 280px;
+  padding: 32px 28px;
+  border-right: 1px solid #dcd3c9;
+}
+
+.how-benefit:last-child {
+  border-right: 0;
+}
+
+.how-benefit > span {
+  color: #b8874a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.how-benefit h3 {
+  margin: 45px 0 18px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.how-benefit p {
+  margin: 0;
+  color: #766d65;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+/* =========================================================
+   OWNERS
+========================================================= */
+
+.how-owners {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(28, 22, 18, 0.92),
+      rgba(28, 22, 18, 0.58),
+      rgba(28, 22, 18, 0.15)
+    ),
+    url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=2200&q=90");
+  background-size: cover;
+  background-position: center;
+}
+
+.how-owners-content {
+  width: min(1180px, calc(100% - 80px));
+  margin: 0 auto;
+  color: #fff;
+}
+
+.how-owners-content .how-eyebrow {
+  color: #d8b27c;
+}
+
+.how-owners-content h2 {
+  max-width: 700px;
+  font-size: clamp(44px, 5vw, 70px);
+}
+
+.how-owners-content p {
+  max-width: 570px;
+  margin: 28px 0 32px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.how-owner-btn {
+  background: #fff;
+  color: #211c18;
+}
+
+.how-owner-btn:hover {
+  background: #b8874a;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   FINAL CTA
+========================================================= */
+
+.how-final {
+  padding: 125px 30px;
+  text-align: center;
+  background: #faf8f5;
+}
+
+.how-final h2 {
+  font-size: clamp(45px, 6vw, 78px);
+}
+
+.how-final p {
+  max-width: 520px;
+  margin: 28px auto 34px;
+  color: #766d65;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.how-final-btn {
+  background: #211c18;
+  color: #fff;
+}
+
+.how-final-btn:hover {
+  background: #b8874a;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+  .how-intro,
+  .how-steps-section,
+  .how-benefits {
+    width: min(100% - 50px, 760px);
+  }
+
+  .how-intro {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 80px 0;
+  }
+
+  .how-step-content {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .how-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .how-benefit:nth-child(2) {
+    border-right: 0;
+  }
+
+  .how-benefit:nth-child(-n + 2) {
+    border-bottom: 1px solid #dcd3c9;
+  }
+
+  .how-experience {
+    grid-template-columns: 1fr;
+  }
+
+  .how-experience-image {
+    min-height: 500px;
+  }
+
+  .how-experience-content {
+    padding: 80px 50px;
+  }
+}
+
+@media (max-width: 700px) {
+  .how-hero {
+    min-height: 590px;
+  }
+
+  .how-hero-content {
+    padding: 80px 25px;
+  }
+
+  .how-hero h1 {
+    font-size: 48px;
+    letter-spacing: -1px;
+  }
+
+  .how-intro,
+  .how-steps-section,
+  .how-benefits {
+    width: calc(100% - 40px);
+  }
+
+  .how-intro {
+    padding: 70px 0;
+  }
+
+  .how-steps-section,
+  .how-benefits {
+    padding: 80px 0;
+  }
+
+  .how-section-heading {
+    margin-bottom: 50px;
+  }
+
+  .how-step {
+    grid-template-columns: 55px 1px 1fr;
+    gap: 18px;
+    padding: 30px 0;
+  }
+
+  .how-step-number {
+    font-size: 22px;
+  }
+
+  .how-step-content h3 {
+    font-size: 23px;
+  }
+
+  .how-experience-image {
+    min-height: 400px;
+  }
+
+  .how-experience-content {
+    padding: 65px 25px;
+  }
+
+  .how-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .how-benefit,
+  .how-benefit:nth-child(2) {
+    min-height: auto;
+    padding: 30px 22px;
+    border-right: 0;
+    border-bottom: 1px solid #dcd3c9;
+  }
+
+  .how-benefit:last-child {
+    border-bottom: 0;
+  }
+
+  .how-benefit h3 {
+    margin-top: 28px;
+  }
+
+  .how-owners {
+    min-height: 560px;
+  }
+
+  .how-owners-content {
+    width: calc(100% - 40px);
+  }
+
+  .how-final {
+    padding: 90px 20px;
+  }
+}
+
+@media (max-width: 450px) {
+  .how-hero h1 {
+    font-size: 42px;
+  }
+
+  .how-hero p {
+    font-size: 14px;
+  }
+
+  .how-step {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .how-step-line {
+    display: none;
+  }
+
+  .how-experience-image {
+    min-height: 330px;
+  }
+
+  .how-image-card {
+    left: 18px;
+    bottom: 18px;
+    width: 200px;
+    padding: 18px;
+  }
+
+  .how-hero-btn,
+  .how-final-btn,
+  .how-owner-btn {
+    width: 100%;
+  }
+}
