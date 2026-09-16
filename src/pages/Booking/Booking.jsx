@@ -263,6 +263,8 @@ const Booking = () => {
           response.data?.data?.calendar ||
           [];
 
+          console.log("PUBLIC CALENDAR:", calendar);
+
         setAvailability(
           Array.isArray(calendar)
             ? calendar
@@ -324,17 +326,35 @@ const Booking = () => {
   |--------------------------------------------------------------------------
   */
 
+  // const getDateStatus = (dateKey) => {
+  //   if (isPastDate(dateKey)) {
+  //     return "past";
+  //   }
+
+  //   return (
+  //     availabilityMap[dateKey]?.status ||
+  //     "available"
+  //   );
+  // };
+
+
   const getDateStatus = (dateKey) => {
-    if (isPastDate(dateKey)) {
-      return "past";
-    }
+  if (isPastDate(dateKey)) {
+    return "past";
+  }
 
-    return (
-      availabilityMap[dateKey]?.status ||
-      "available"
-    );
-  };
+  const status =
+    availabilityMap[dateKey]?.status;
 
+  if (
+    status === "booked" ||
+    status === "pending"
+  ) {
+    return "booked";
+  }
+
+  return status || "available";
+};
   /*
   |--------------------------------------------------------------------------
   | Is Date Selectable
@@ -682,36 +702,56 @@ const Booking = () => {
     |--------------------------------------------------------------------------
     */
 
-    const selectedStatus =
-      getDateStatus(eventDate);
+    // const selectedStatus =
+    //   getDateStatus(eventDate);
 
-    if (
-      selectedStatus !== "available"
-    ) {
-      if (selectedStatus === "blocked") {
-        toast.error(
-          "This date is blocked by the hall. Please choose another date."
-        );
-      } else if (
-        selectedStatus === "booked"
-      ) {
-        toast.error(
-          "This date is already booked. Please choose another date."
-        );
-      } else if (
-        selectedStatus === "pending"
-      ) {
-        toast.error(
-          "This date has a pending booking. Please choose another date."
-        );
-      } else {
-        toast.error(
-          "Please choose an available date."
-        );
-      }
+    // if (
+    //   selectedStatus !== "available"
+    // ) {
+    //   if (selectedStatus === "blocked") {
+    //     toast.error(
+    //       "This date is blocked by the hall. Please choose another date."
+    //     );
+    //   } else if (
+    //     selectedStatus === "booked"
+    //   ) {
+    //     toast.error(
+    //       "This date is already booked. Please choose another date."
+    //     );
+    //   } else if (
+    //     selectedStatus === "pending"
+    //   ) {
+    //     toast.error(
+    //       "This date has a pending booking. Please choose another date."
+    //     );
+    //   } else {
+    //     toast.error(
+    //       "Please choose an available date."
+    //     );
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
+            const selectedStatus =
+          getDateStatus(eventDate);
+
+        if (selectedStatus !== "available") {
+          if (selectedStatus === "booked") {
+            toast.error(
+              "This date is already booked. Please choose another date."
+            );
+          } else if (selectedStatus === "blocked") {
+            toast.error(
+              "This date is blocked by the hall. Please choose another date."
+            );
+          } else {
+            toast.error(
+              "Please choose an available date."
+            );
+          }
+
+          return;
+        }
 
     if (!guests) {
       toast.error(

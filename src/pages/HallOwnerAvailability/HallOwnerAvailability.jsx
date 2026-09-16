@@ -357,6 +357,7 @@ const HallOwnerAvailability = () => {
               },
             }
           );
+          console.log("OWNER CALENDAR RESPONSE:", response.data);
 
         setCalendar(
           response.data?.calendar || []
