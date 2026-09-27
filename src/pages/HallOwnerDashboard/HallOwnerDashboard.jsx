@@ -1879,7 +1879,7 @@ const HallOwnerDashboard = () => {
                 <FaArrowRight />
               </Link>
 
-              <Link
+              {/* <Link
                 to="/owner/availability"
                 className="quick-action"
               >
@@ -1898,7 +1898,7 @@ const HallOwnerDashboard = () => {
                 </div>
 
                 <FaArrowRight />
-              </Link>
+              </Link> */}
 
               <Link
                 to="/owner/packages"

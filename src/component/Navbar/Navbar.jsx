@@ -278,7 +278,7 @@ const Navbar = () => {
                 : ""
             }
           >
-            Dashboard
+            Owner Dashboard
           </Link>
         )}
 

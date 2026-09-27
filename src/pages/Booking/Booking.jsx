@@ -2286,14 +2286,14 @@ const Booking = () => {
         const from = formatDateKey(fromDate);
         const to = formatDateKey(toDate);
 
-        console.log(
-          "BOOKING CALENDAR REQUEST:",
-          {
-            hallIdFromUrl: id,
-            from,
-            to,
-          }
-        );
+        // console.log(
+        //   "BOOKING CALENDAR REQUEST:",
+        //   {
+        //     hallIdFromUrl: id,
+        //     from,
+        //     to,
+        //   }
+        // );
 
         const response = await api.get(
           `/availability/public/hall/${id}`,
@@ -2310,10 +2310,10 @@ const Booking = () => {
           response.data?.data?.calendar ||
           [];
 
-        console.log(
-          "PUBLIC CALENDAR:",
-          calendar
-        );
+        // console.log(
+        //   "PUBLIC CALENDAR:",
+        //   calendar
+        // );
 
         /*
         |--------------------------------------------------------------------------
@@ -3708,7 +3708,7 @@ const Booking = () => {
                   </div>
                 </label>
 
-                <label
+                {/* <label
                   className={`booking-payment-option ${
                     paymentMethod ===
                     "card"
@@ -3741,9 +3741,9 @@ const Booking = () => {
                       the hall.
                     </span>
                   </div>
-                </label>
+                </label> */}
 
-                <label
+                {/* <label
                   className={`booking-payment-option ${
                     paymentMethod ===
                     "online"
@@ -3775,7 +3775,7 @@ const Booking = () => {
                       Online payment.
                     </span>
                   </div>
-                </label>
+                </label> */}
 
               </div>
             </div>
