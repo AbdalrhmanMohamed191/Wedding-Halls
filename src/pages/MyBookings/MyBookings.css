@@ -875,3 +875,364 @@ min-height: 40px;
 font-size: 12px;
 }
 }
+/* =========================================================
+   BOOKING REVIEWS
+========================================================= */
+
+.booking-review-area {
+  margin-top: 20px;
+  padding: 17px;
+  border: 1px solid #eee4e8;
+  border-radius: 13px;
+  background: #fcfafb;
+}
+
+.booking-review-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.booking-review-prompt strong {
+  display: block;
+  color: #333;
+  font-size: 14px;
+}
+
+.booking-review-prompt p {
+  margin: 5px 0 0;
+  color: #888;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.booking-review-prompt button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 15px;
+  background: #8f6578;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.booking-review-prompt button:hover {
+  background: #765365;
+}
+
+.booking-review-existing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.booking-review-existing > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.booking-review-existing > div:first-child > span {
+  color: #777;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.booking-review-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.booking-review-stars span {
+  color: #ddd;
+  font-size: 18px;
+}
+
+.booking-review-stars span.active {
+  color: #d4a72c;
+}
+
+.booking-review-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.booking-review-actions button {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #555;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.booking-review-actions button:hover {
+  border-color: #8f6578;
+  color: #8f6578;
+}
+
+.booking-review-actions .delete-review-button {
+  color: #a34f4f;
+}
+
+.booking-review-actions .delete-review-button:hover {
+  border-color: #a34f4f;
+  color: #a34f4f;
+}
+
+.booking-review-comment {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   REVIEW MODAL
+========================================================= */
+
+.review-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(25, 18, 22, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.review-modal {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+}
+
+.review-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 17px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: #f6f2f4;
+  border-radius: 50%;
+  color: #555;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.review-modal-close:hover {
+  background: #eee5e9;
+}
+
+.review-modal-header {
+  padding-right: 40px;
+  margin-bottom: 28px;
+}
+
+.review-modal-header > span {
+  color: #9a7083;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.review-modal-header h2 {
+  margin: 8px 0 5px;
+  color: #282326;
+  font-size: 25px;
+}
+
+.review-modal-header p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+/* Rating */
+
+.review-rating-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.review-rating-input > label {
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.review-rating-stars {
+  display: flex;
+  gap: 5px;
+}
+
+.review-rating-stars button {
+  border: 0;
+  background: transparent;
+  padding: 2px;
+  color: #ddd;
+  font-size: 38px;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.review-rating-stars button:hover {
+  transform: scale(1.08);
+}
+
+.review-rating-stars button.active {
+  color: #d4a72c;
+}
+
+.review-rating-text {
+  margin-top: 7px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* Comment */
+
+.review-comment-input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-comment-input label {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.review-comment-input textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 125px;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 11px;
+  color: #333;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.review-comment-input textarea:focus {
+  border-color: #9a7083;
+}
+
+.review-comment-input > span {
+  align-self: flex-end;
+  margin-top: 5px;
+  color: #999;
+  font-size: 11px;
+}
+
+/* Actions */
+
+.review-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.review-modal-actions button {
+  min-height: 43px;
+  border-radius: 9px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.review-cancel-button {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #555;
+}
+
+.review-submit-button {
+  border: 0;
+  background: #8f6578;
+  color: #fff;
+}
+
+.review-submit-button:hover:not(:disabled) {
+  background: #765365;
+}
+
+.review-submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+  .booking-review-prompt,
+  .booking-review-existing {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .booking-review-prompt button {
+    width: 100%;
+  }
+
+  .booking-review-actions {
+    width: 100%;
+  }
+
+  .booking-review-actions button {
+    flex: 1;
+  }
+
+  .review-modal {
+    padding: 25px 20px;
+  }
+
+  .review-modal-header h2 {
+    font-size: 21px;
+  }
+
+  .review-rating-stars button {
+    font-size: 32px;
+  }
+
+  .review-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .review-modal-actions button {
+    width: 100%;
+  }
+}
+

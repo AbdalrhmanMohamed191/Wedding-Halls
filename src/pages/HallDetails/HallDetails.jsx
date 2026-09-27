@@ -1,3 +1,678 @@
+// // import React, { useEffect, useMemo, useState } from "react";
+// // import { Link, useNavigate, useParams } from "react-router-dom";
+// // import api from "../../api/axios";
+// // import "./HallDetails.css";
+
+// // const HallDetails = () => {
+// //   const { id } = useParams();
+// //   const navigate = useNavigate();
+
+// //   const [hall, setHall] = useState(null);
+// //   const [packages, setPackages] = useState([]);
+// //   const [availability, setAvailability] = useState([]);
+
+// //   const [loading, setLoading] = useState(true);
+// //   const [error, setError] = useState("");
+
+// //   const [activeImage, setActiveImage] = useState(0);
+
+// //   useEffect(() => {
+// //     const fetchHallDetails = async () => {
+// //       try {
+// //         setLoading(true);
+// //         setError("");
+
+// //         const [hallResponse, packagesResponse, availabilityResponse] =
+// //           await Promise.all([
+// //             api.get(`/halls/public/${id}`),
+// //             api.get(`/packages/public/hall/${id}`),
+// //             api.get(`/availability/public/hall/${id}`),
+// //           ]);
+
+// //         /*
+// //           Hall API
+// //         */
+// //         if (hallResponse.data?.success) {
+// //           setHall(hallResponse.data.hall);
+// //         } else {
+// //           throw new Error("Wedding hall not found.");
+// //         }
+
+// //         /*
+// //           Packages API
+// //           We support the common response shapes so the page
+// //           doesn't break if the controller returns packages
+// //           directly or inside data.
+// //         */
+// //         const packageData = packagesResponse.data;
+
+// //         if (packageData?.success) {
+// //           setPackages(
+// //             packageData.packages ||
+// //               packageData.data?.packages ||
+// //               packageData.data ||
+// //               []
+// //           );
+// //         } else {
+// //           setPackages([]);
+// //         }
+
+// //         /*
+// //           Availability API
+// //         */
+// //         const availabilityData = availabilityResponse.data;
+
+// //         if (availabilityData?.success) {
+// //           setAvailability(
+// //             availabilityData.availability ||
+// //               availabilityData.data?.availability ||
+// //               availabilityData.data ||
+// //               []
+// //           );
+// //         } else {
+// //           setAvailability([]);
+// //         }
+// //       } catch (err) {
+// //         console.error("Hall details error:", err);
+
+// //         setError(
+// //           err.response?.data?.message ||
+// //             err.message ||
+// //             "Something went wrong while loading this wedding hall."
+// //         );
+// //       } finally {
+// //         setLoading(false);
+// //       }
+// //     };
+
+// //     if (id) {
+// //       fetchHallDetails();
+// //     }
+// //   }, [id]);
+
+// //   const galleryImages = useMemo(() => {
+// //     if (!hall) return [];
+
+// //     const images = [];
+
+// //     if (hall.coverImage?.url) {
+// //       images.push(hall.coverImage.url);
+// //     }
+
+// //     if (Array.isArray(hall.images)) {
+// //       hall.images.forEach((image) => {
+// //         if (image?.url && !images.includes(image.url)) {
+// //           images.push(image.url);
+// //         }
+// //       });
+// //     }
+
+// //     return images;
+// //   }, [hall]);
+
+// //   const formatPrice = (price) => {
+// //     if (price === null || price === undefined) {
+// //       return "Price on request";
+// //     }
+
+// //     return `${Number(price).toLocaleString("en-US")} EGP`;
+// //   };
+
+// //   const getPackagePrice = (pkg) => {
+// //     if (pkg.price === undefined || pkg.price === null) {
+// //       return "Price on request";
+// //     }
+
+// //     return formatPrice(pkg.price);
+// //   };
+
+// //   const isDateAvailable = (date) => {
+// //     const item = availability.find(
+// //       (entry) => String(entry.date).slice(0, 10) === date
+// //     );
+
+// //     if (!item) return true;
+
+// //     return item.status === "available";
+// //   };
+
+// //   const handleBook = (selectedPackage = null) => {
+// //     const token = localStorage.getItem("token");
+
+// //     if (!token) {
+// //       navigate("/login", {
+// //         state: {
+// //           from: `/halls/${id}`,
+// //           message: "Please login to book this wedding hall.",
+// //         },
+// //       });
+
+// //       return;
+// //     }
+
+// //     navigate(`/halls/${id}/book`, {
+// //       state: {
+// //         hall,
+// //         selectedPackage,
+// //       },
+// //     });
+// //   };
+
+// //   if (loading) {
+// //     return (
+// //       <div className="hall-details-page">
+// //         <div className="hall-details-loading">
+// //           <div className="hall-details-spinner" />
+// //           <p>Loading wedding hall...</p>
+// //         </div>
+// //       </div>
+// //     );
+// //   }
+
+// //   if (error || !hall) {
+// //     return (
+// //       <div className="hall-details-page">
+// //         <div className="hall-details-state">
+// //           <div className="hall-details-state-icon">!</div>
+
+// //           <h2>Wedding Hall Not Found</h2>
+
+// //           <p>
+// //             {error ||
+// //               "We couldn't find the wedding hall you're looking for."}
+// //           </p>
+
+// //           <Link to="/halls" className="hall-back-button">
+// //             ← Back to Wedding Halls
+// //           </Link>
+// //         </div>
+// //       </div>
+// //     );
+// //   }
+
+// //   const rating = hall.rating?.average || 0;
+// //   const ratingCount = hall.rating?.count || 0;
+
+// //   return (
+// //     <div className="hall-details-page">
+// //       {/* =========================
+// //           BREADCRUMB
+// //       ========================= */}
+
+// //       <div className="hall-details-container">
+// //         <div className="hall-breadcrumb">
+// //           <Link to="/">Home</Link>
+// //           <span>/</span>
+// //           <Link to="/halls">Wedding Halls</Link>
+// //           <span>/</span>
+// //           <strong>{hall.name}</strong>
+// //         </div>
+
+// //         {/* =========================
+// //             GALLERY
+// //         ========================= */}
+
+// //         <section className="hall-gallery-section">
+// //           <div className="hall-gallery-main">
+// //             {galleryImages.length > 0 ? (
+// //               <img
+// //                 src={galleryImages[activeImage]}
+// //                 alt={hall.name}
+// //               />
+// //             ) : (
+// //               <div className="hall-gallery-placeholder">
+// //                 <span>W</span>
+// //                 <p>Wedding Venue</p>
+// //               </div>
+// //             )}
+
+// //             {hall.isFeatured && (
+// //               <span className="hall-details-featured">
+// //                 Featured
+// //               </span>
+// //             )}
+
+// //             {galleryImages.length > 1 && (
+// //               <>
+// //                 <button
+// //                   type="button"
+// //                   className="gallery-arrow gallery-arrow-left"
+// //                   onClick={() =>
+// //                     setActiveImage(
+// //                       activeImage === 0
+// //                         ? galleryImages.length - 1
+// //                         : activeImage - 1
+// //                     )
+// //                   }
+// //                 >
+// //                   ‹
+// //                 </button>
+
+// //                 <button
+// //                   type="button"
+// //                   className="gallery-arrow gallery-arrow-right"
+// //                   onClick={() =>
+// //                     setActiveImage(
+// //                       activeImage === galleryImages.length - 1
+// //                         ? 0
+// //                         : activeImage + 1
+// //                     )
+// //                   }
+// //                 >
+// //                   ›
+// //                 </button>
+// //               </>
+// //             )}
+// //           </div>
+
+// //           {galleryImages.length > 1 && (
+// //             <div className="hall-gallery-thumbnails">
+// //               {galleryImages.map((image, index) => (
+// //                 <button
+// //                   type="button"
+// //                   key={image}
+// //                   className={`hall-gallery-thumbnail ${
+// //                     activeImage === index ? "active" : ""
+// //                   }`}
+// //                   onClick={() => setActiveImage(index)}
+// //                 >
+// //                   <img src={image} alt={`${hall.name} ${index + 1}`} />
+// //                 </button>
+// //               ))}
+// //             </div>
+// //           )}
+// //         </section>
+
+// //         {/* =========================
+// //             MAIN INFO
+// //         ========================= */}
+
+// //         <section className="hall-main-info">
+// //           <div className="hall-main-info-left">
+// //             <span className="hall-details-eyebrow">
+// //               WEDDING VENUE
+// //             </span>
+
+// //             <h1>{hall.name}</h1>
+
+// //             <div className="hall-details-location">
+// //               <span>⌖</span>
+
+// //               <span>
+// //                 {hall.address || hall.area || hall.city}
+// //                 {hall.city && hall.address
+// //                   ? `, ${hall.city}`
+// //                   : ""}
+// //               </span>
+// //             </div>
+
+// //             <div className="hall-details-rating">
+// //               <span className="rating-star">★</span>
+
+// //               <strong>
+// //                 {rating > 0 ? rating.toFixed(1) : "New"}
+// //               </strong>
+
+// //               {ratingCount > 0 && (
+// //                 <span>
+// //                   {ratingCount}{" "}
+// //                   {ratingCount === 1 ? "review" : "reviews"}
+// //                 </span>
+// //               )}
+// //             </div>
+// //           </div>
+
+// //           <div className="hall-main-info-price">
+// //             <span>STARTING FROM</span>
+
+// //             <strong>{formatPrice(hall.startingPrice)}</strong>
+
+// //             <small>per event</small>
+// //           </div>
+// //         </section>
+
+// //         {/* =========================
+// //             QUICK INFO
+// //         ========================= */}
+
+// //         <section className="hall-quick-info">
+// //           <div className="hall-quick-item">
+// //             <div className="hall-quick-icon">♙</div>
+
+// //             <div>
+// //               <span>Capacity</span>
+
+// //               <strong>
+// //                 {hall.capacity?.min || 0} -{" "}
+// //                 {hall.capacity?.max || 0} Guests
+// //               </strong>
+// //             </div>
+// //           </div>
+
+// //           <div className="hall-quick-item">
+// //             <div className="hall-quick-icon">⌖</div>
+
+// //             <div>
+// //               <span>Location</span>
+
+// //               <strong>
+// //                 {hall.city || "Not specified"}
+// //               </strong>
+// //             </div>
+// //           </div>
+
+// //           <div className="hall-quick-item">
+// //             <div className="hall-quick-icon">★</div>
+
+// //             <div>
+// //               <span>Rating</span>
+
+// //               <strong>
+// //                 {rating > 0 ? `${rating.toFixed(1)} / 5` : "New"}
+// //               </strong>
+// //             </div>
+// //           </div>
+
+// //           <div className="hall-quick-item">
+// //             <div className="hall-quick-icon">✓</div>
+
+// //             <div>
+// //               <span>Status</span>
+
+// //               <strong>
+// //                 {hall.isAvailable ? "Available" : "Unavailable"}
+// //               </strong>
+// //             </div>
+// //           </div>
+// //         </section>
+
+// //         {/* =========================
+// //             DESCRIPTION + FEATURES
+// //         ========================= */}
+
+// //         <section className="hall-content-grid">
+// //           <div className="hall-about">
+// //             <span className="hall-section-label">ABOUT THE VENUE</span>
+
+// //             <h2>Everything You Need for Your Special Day</h2>
+
+// //             <p>
+// //               {hall.description ||
+// //                 "This beautiful wedding venue is ready to make your special day unforgettable."}
+// //             </p>
+
+// //             {hall.address && (
+// //               <div className="hall-address-box">
+// //                 <span>⌖</span>
+
+// //                 <div>
+// //                   <small>ADDRESS</small>
+// //                   <strong>{hall.address}</strong>
+// //                 </div>
+// //               </div>
+// //             )}
+// //           </div>
+
+// //           <div className="hall-features-section">
+// //             <span className="hall-section-label">
+// //               VENUE FEATURES
+// //             </span>
+
+// //             <h2>What This Venue Offers</h2>
+
+// //             {hall.features?.length > 0 ? (
+// //               <div className="hall-details-features">
+// //                 {hall.features.map((feature) => (
+// //                   <div
+// //                     className="hall-detail-feature"
+// //                     key={feature}
+// //                   >
+// //                     <span>✓</span>
+// //                     <p>{feature}</p>
+// //                   </div>
+// //                 ))}
+// //               </div>
+// //             ) : (
+// //               <p className="hall-no-data">
+// //                 No features have been added yet.
+// //               </p>
+// //             )}
+// //           </div>
+// //         </section>
+
+// //         {/* =========================
+// //             PACKAGES
+// //         ========================= */}
+
+// //         <section className="hall-packages-section">
+// //           <div className="hall-section-heading">
+// //             <div>
+// //               <span className="hall-section-label">
+// //                 WEDDING PACKAGES
+// //               </span>
+
+// //               <h2>Choose Your Perfect Package</h2>
+
+// //               <p>
+// //                 Select a package that matches your celebration
+// //                 and your needs.
+// //               </p>
+// //             </div>
+// //           </div>
+
+// //           {packages.length === 0 ? (
+// //             <div className="hall-no-packages">
+// //               <span>◇</span>
+
+// //               <h3>No Packages Available Yet</h3>
+
+// //               <p>
+// //                 The hall owner hasn't added any packages yet.
+// //               </p>
+// //             </div>
+// //           ) : (
+// //             <div className="hall-packages-grid">
+// //               {packages.map((pkg) => (
+// //                 <div className="hall-package-card" key={pkg._id}>
+// //                   {pkg.image?.url && (
+// //                     <div className="hall-package-image">
+// //                       <img
+// //                         src={pkg.image.url}
+// //                         alt={pkg.name}
+// //                       />
+// //                     </div>
+// //                   )}
+
+// //                   <div className="hall-package-body">
+// //                     <div className="hall-package-top">
+// //                       <h3>{pkg.name}</h3>
+
+// //                       {pkg.isActive === false && (
+// //                         <span className="package-inactive">
+// //                           Unavailable
+// //                         </span>
+// //                       )}
+// //                     </div>
+
+// //                     {pkg.description && (
+// //                       <p className="hall-package-description">
+// //                         {pkg.description}
+// //                       </p>
+// //                     )}
+
+// //                     <div className="hall-package-price">
+// //                       <small>PACKAGE PRICE</small>
+// //                       <strong>{getPackagePrice(pkg)}</strong>
+// //                     </div>
+
+// //                     {(pkg.minGuests || pkg.maxGuests) && (
+// //                       <div className="hall-package-detail">
+// //                         <span>Guests</span>
+
+// //                         <strong>
+// //                           {pkg.minGuests || 0} -{" "}
+// //                           {pkg.maxGuests || "Unlimited"}
+// //                         </strong>
+// //                       </div>
+// //                     )}
+
+// //                     {pkg.durationHours && (
+// //                       <div className="hall-package-detail">
+// //                         <span>Duration</span>
+
+// //                         <strong>
+// //                           {pkg.durationHours} hours
+// //                         </strong>
+// //                       </div>
+// //                     )}
+
+// //                     {pkg.features?.length > 0 && (
+// //                       <div className="hall-package-features">
+// //                         {pkg.features.slice(0, 5).map((feature) => (
+// //                           <span key={feature}>
+// //                             ✓ {feature}
+// //                           </span>
+// //                         ))}
+// //                       </div>
+// //                     )}
+
+// //                     <button
+// //                       type="button"
+// //                       className="hall-package-book"
+// //                       disabled={pkg.isActive === false}
+// //                       onClick={() => handleBook(pkg)}
+// //                     >
+// //                       {pkg.isActive === false
+// //                         ? "Currently Unavailable"
+// //                         : "Choose This Package"}
+// //                     </button>
+// //                   </div>
+// //                 </div>
+// //               ))}
+// //             </div>
+// //           )}
+// //         </section>
+
+// //         {/* =========================
+// //             AVAILABILITY
+// //         ========================= */}
+
+// //         <section className="hall-availability-section">
+// //           <div className="hall-section-heading">
+// //             <div>
+// //               <span className="hall-section-label">
+// //                 AVAILABILITY
+// //               </span>
+
+// //               <h2>Check Venue Availability</h2>
+
+// //               <p>
+// //                 See the current availability before making your
+// //                 booking.
+// //               </p>
+// //             </div>
+// //           </div>
+
+// //           <div className="hall-availability-card">
+// //             {availability.length === 0 ? (
+// //               <div className="hall-availability-empty">
+// //                 <span>✓</span>
+
+// //                 <div>
+// //                   <strong>
+// //                     No blocked dates currently listed
+// //                   </strong>
+
+// //                   <p>
+// //                     You can continue to the booking process and
+// //                     select your preferred event date.
+// //                   </p>
+// //                 </div>
+// //               </div>
+// //             ) : (
+// //               <>
+// //                 <div className="availability-legend">
+// //                   <div>
+// //                     <span className="legend-dot available" />
+// //                     Available
+// //                   </div>
+
+// //                   <div>
+// //                     <span className="legend-dot blocked" />
+// //                     Blocked
+// //                   </div>
+// //                 </div>
+
+// //                 <div className="availability-list">
+// //                   {availability
+// //                     .slice()
+// //                     .sort(
+// //                       (a, b) =>
+// //                         new Date(a.date) -
+// //                         new Date(b.date)
+// //                     )
+// //                     .map((item) => {
+// //                       const date = new Date(item.date);
+
+// //                       return (
+// //                         <div
+// //                           className={`availability-item ${
+// //                             item.status === "blocked"
+// //                               ? "blocked"
+// //                               : "available"
+// //                           }`}
+// //                           key={item._id || item.date}
+// //                         >
+// //                           <div>
+// //                             <strong>
+// //                               {date.toLocaleDateString(
+// //                                 "en-US",
+// //                                 {
+// //                                   weekday: "short",
+// //                                   month: "short",
+// //                                   day: "numeric",
+// //                                   year: "numeric",
+// //                                 }
+// //                               )}
+// //                             </strong>
+
+// //                             {item.reason && (
+// //                               <small>{item.reason}</small>
+// //                             )}
+// //                           </div>
+
+// //                           <span>
+// //                             {item.status === "blocked"
+// //                               ? "Blocked"
+// //                               : "Available"}
+// //                           </span>
+// //                         </div>
+// //                       );
+// //                     })}
+// //                 </div>
+// //               </>
+// //             )}
+
+// //             <button
+// //               type="button"
+// //               className="hall-main-book-button"
+// //               onClick={() => handleBook()}
+// //               disabled={hall.isAvailable === false}
+// //             >
+// //               {hall.isAvailable === false
+// //                 ? "Currently Unavailable"
+// //                 : "Book This Wedding Hall"}
+// //             </button>
+// //           </div>
+// //         </section>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default HallDetails;
+
+
 // import React, { useEffect, useMemo, useState } from "react";
 // import { Link, useNavigate, useParams } from "react-router-dom";
 // import api from "../../api/axios";
@@ -40,9 +715,6 @@
 
 //         /*
 //           Packages API
-//           We support the common response shapes so the page
-//           doesn't break if the controller returns packages
-//           directly or inside data.
 //         */
 //         const packageData = packagesResponse.data;
 
@@ -90,6 +762,9 @@
 //     }
 //   }, [id]);
 
+//   /*
+//     Build gallery images
+//   */
 //   const galleryImages = useMemo(() => {
 //     if (!hall) return [];
 
@@ -110,6 +785,9 @@
 //     return images;
 //   }, [hall]);
 
+//   /*
+//     Format prices
+//   */
 //   const formatPrice = (price) => {
 //     if (price === null || price === undefined) {
 //       return "Price on request";
@@ -126,6 +804,9 @@
 //     return formatPrice(pkg.price);
 //   };
 
+//   /*
+//     Check availability
+//   */
 //   const isDateAvailable = (date) => {
 //     const item = availability.find(
 //       (entry) => String(entry.date).slice(0, 10) === date
@@ -136,28 +817,25 @@
 //     return item.status === "available";
 //   };
 
-//   const handleBook = (selectedPackage = null) => {
-//     const token = localStorage.getItem("token");
-
-//     if (!token) {
-//       navigate("/login", {
-//         state: {
-//           from: `/halls/${id}`,
-//           message: "Please login to book this wedding hall.",
-//         },
-//       });
-
-//       return;
-//     }
-
-//     navigate(`/halls/${id}/book`, {
+//   /*
+//     Booking flow:
+//     Hall Details
+//         ↓
+//     Choose Package
+//         ↓
+//     Booking
+//   */
+//   const handleBook = () => {
+//     navigate(`/halls/${id}/packages`, {
 //       state: {
 //         hall,
-//         selectedPackage,
 //       },
 //     });
 //   };
 
+//   /*
+//     Loading state
+//   */
 //   if (loading) {
 //     return (
 //       <div className="hall-details-page">
@@ -169,6 +847,9 @@
 //     );
 //   }
 
+//   /*
+//     Error state
+//   */
 //   if (error || !hall) {
 //     return (
 //       <div className="hall-details-page">
@@ -195,16 +876,20 @@
 
 //   return (
 //     <div className="hall-details-page">
-//       {/* =========================
-//           BREADCRUMB
-//       ========================= */}
-
 //       <div className="hall-details-container">
+//         {/* =========================
+//             BREADCRUMB
+//         ========================= */}
+
 //         <div className="hall-breadcrumb">
 //           <Link to="/">Home</Link>
+
 //           <span>/</span>
+
 //           <Link to="/halls">Wedding Halls</Link>
+
 //           <span>/</span>
+
 //           <strong>{hall.name}</strong>
 //         </div>
 
@@ -276,7 +961,10 @@
 //                   }`}
 //                   onClick={() => setActiveImage(index)}
 //                 >
-//                   <img src={image} alt={`${hall.name} ${index + 1}`} />
+//                   <img
+//                     src={image}
+//                     alt={`${hall.name} ${index + 1}`}
+//                   />
 //                 </button>
 //               ))}
 //             </div>
@@ -300,6 +988,7 @@
 
 //               <span>
 //                 {hall.address || hall.area || hall.city}
+
 //                 {hall.city && hall.address
 //                   ? `, ${hall.city}`
 //                   : ""}
@@ -316,7 +1005,9 @@
 //               {ratingCount > 0 && (
 //                 <span>
 //                   {ratingCount}{" "}
-//                   {ratingCount === 1 ? "review" : "reviews"}
+//                   {ratingCount === 1
+//                     ? "review"
+//                     : "reviews"}
 //                 </span>
 //               )}
 //             </div>
@@ -325,7 +1016,9 @@
 //           <div className="hall-main-info-price">
 //             <span>STARTING FROM</span>
 
-//             <strong>{formatPrice(hall.startingPrice)}</strong>
+//             <strong>
+//               {formatPrice(hall.startingPrice)}
+//             </strong>
 
 //             <small>per event</small>
 //           </div>
@@ -337,7 +1030,9 @@
 
 //         <section className="hall-quick-info">
 //           <div className="hall-quick-item">
-//             <div className="hall-quick-icon">♙</div>
+//             <div className="hall-quick-icon">
+//               ♙
+//             </div>
 
 //             <div>
 //               <span>Capacity</span>
@@ -350,7 +1045,9 @@
 //           </div>
 
 //           <div className="hall-quick-item">
-//             <div className="hall-quick-icon">⌖</div>
+//             <div className="hall-quick-icon">
+//               ⌖
+//             </div>
 
 //             <div>
 //               <span>Location</span>
@@ -362,25 +1059,33 @@
 //           </div>
 
 //           <div className="hall-quick-item">
-//             <div className="hall-quick-icon">★</div>
+//             <div className="hall-quick-icon">
+//               ★
+//             </div>
 
 //             <div>
 //               <span>Rating</span>
 
 //               <strong>
-//                 {rating > 0 ? `${rating.toFixed(1)} / 5` : "New"}
+//                 {rating > 0
+//                   ? `${rating.toFixed(1)} / 5`
+//                   : "New"}
 //               </strong>
 //             </div>
 //           </div>
 
 //           <div className="hall-quick-item">
-//             <div className="hall-quick-icon">✓</div>
+//             <div className="hall-quick-icon">
+//               ✓
+//             </div>
 
 //             <div>
 //               <span>Status</span>
 
 //               <strong>
-//                 {hall.isAvailable ? "Available" : "Unavailable"}
+//                 {hall.isAvailable
+//                   ? "Available"
+//                   : "Unavailable"}
 //               </strong>
 //             </div>
 //           </div>
@@ -392,9 +1097,13 @@
 
 //         <section className="hall-content-grid">
 //           <div className="hall-about">
-//             <span className="hall-section-label">ABOUT THE VENUE</span>
+//             <span className="hall-section-label">
+//               ABOUT THE VENUE
+//             </span>
 
-//             <h2>Everything You Need for Your Special Day</h2>
+//             <h2>
+//               Everything You Need for Your Special Day
+//             </h2>
 
 //             <p>
 //               {hall.description ||
@@ -407,7 +1116,10 @@
 
 //                 <div>
 //                   <small>ADDRESS</small>
-//                   <strong>{hall.address}</strong>
+
+//                   <strong>
+//                     {hall.address}
+//                   </strong>
 //                 </div>
 //               </div>
 //             )}
@@ -418,7 +1130,9 @@
 //               VENUE FEATURES
 //             </span>
 
-//             <h2>What This Venue Offers</h2>
+//             <h2>
+//               What This Venue Offers
+//             </h2>
 
 //             {hall.features?.length > 0 ? (
 //               <div className="hall-details-features">
@@ -428,6 +1142,7 @@
 //                     key={feature}
 //                   >
 //                     <span>✓</span>
+
 //                     <p>{feature}</p>
 //                   </div>
 //                 ))}
@@ -451,11 +1166,13 @@
 //                 WEDDING PACKAGES
 //               </span>
 
-//               <h2>Choose Your Perfect Package</h2>
+//               <h2>
+//                 Choose Your Perfect Package
+//               </h2>
 
 //               <p>
-//                 Select a package that matches your celebration
-//                 and your needs.
+//                 Select a package that matches your
+//                 celebration and your needs.
 //               </p>
 //             </div>
 //           </div>
@@ -464,16 +1181,22 @@
 //             <div className="hall-no-packages">
 //               <span>◇</span>
 
-//               <h3>No Packages Available Yet</h3>
+//               <h3>
+//                 No Packages Available Yet
+//               </h3>
 
 //               <p>
-//                 The hall owner hasn't added any packages yet.
+//                 The hall owner hasn't added any
+//                 packages yet.
 //               </p>
 //             </div>
 //           ) : (
 //             <div className="hall-packages-grid">
 //               {packages.map((pkg) => (
-//                 <div className="hall-package-card" key={pkg._id}>
+//                 <div
+//                   className="hall-package-card"
+//                   key={pkg._id}
+//                 >
 //                   {pkg.image?.url && (
 //                     <div className="hall-package-image">
 //                       <img
@@ -501,17 +1224,24 @@
 //                     )}
 
 //                     <div className="hall-package-price">
-//                       <small>PACKAGE PRICE</small>
-//                       <strong>{getPackagePrice(pkg)}</strong>
+//                       <small>
+//                         PACKAGE PRICE
+//                       </small>
+
+//                       <strong>
+//                         {getPackagePrice(pkg)}
+//                       </strong>
 //                     </div>
 
-//                     {(pkg.minGuests || pkg.maxGuests) && (
+//                     {(pkg.minGuests ||
+//                       pkg.maxGuests) && (
 //                       <div className="hall-package-detail">
 //                         <span>Guests</span>
 
 //                         <strong>
 //                           {pkg.minGuests || 0} -{" "}
-//                           {pkg.maxGuests || "Unlimited"}
+//                           {pkg.maxGuests ||
+//                             "Unlimited"}
 //                         </strong>
 //                       </div>
 //                     )}
@@ -528,19 +1258,23 @@
 
 //                     {pkg.features?.length > 0 && (
 //                       <div className="hall-package-features">
-//                         {pkg.features.slice(0, 5).map((feature) => (
-//                           <span key={feature}>
-//                             ✓ {feature}
-//                           </span>
-//                         ))}
+//                         {pkg.features
+//                           .slice(0, 5)
+//                           .map((feature) => (
+//                             <span key={feature}>
+//                               ✓ {feature}
+//                             </span>
+//                           ))}
 //                       </div>
 //                     )}
 
 //                     <button
 //                       type="button"
 //                       className="hall-package-book"
-//                       disabled={pkg.isActive === false}
-//                       onClick={() => handleBook(pkg)}
+//                       disabled={
+//                         pkg.isActive === false
+//                       }
+//                       onClick={handleBook}
 //                     >
 //                       {pkg.isActive === false
 //                         ? "Currently Unavailable"
@@ -564,11 +1298,13 @@
 //                 AVAILABILITY
 //               </span>
 
-//               <h2>Check Venue Availability</h2>
+//               <h2>
+//                 Check Venue Availability
+//               </h2>
 
 //               <p>
-//                 See the current availability before making your
-//                 booking.
+//                 See the current availability before
+//                 making your booking.
 //               </p>
 //             </div>
 //           </div>
@@ -584,8 +1320,9 @@
 //                   </strong>
 
 //                   <p>
-//                     You can continue to the booking process and
-//                     select your preferred event date.
+//                     You can continue to the booking
+//                     process and select your preferred
+//                     event date.
 //                   </p>
 //                 </div>
 //               </div>
@@ -612,7 +1349,9 @@
 //                         new Date(b.date)
 //                     )
 //                     .map((item) => {
-//                       const date = new Date(item.date);
+//                       const date = new Date(
+//                         item.date
+//                       );
 
 //                       return (
 //                         <div
@@ -621,7 +1360,10 @@
 //                               ? "blocked"
 //                               : "available"
 //                           }`}
-//                           key={item._id || item.date}
+//                           key={
+//                             item._id ||
+//                             item.date
+//                           }
 //                         >
 //                           <div>
 //                             <strong>
@@ -637,12 +1379,15 @@
 //                             </strong>
 
 //                             {item.reason && (
-//                               <small>{item.reason}</small>
+//                               <small>
+//                                 {item.reason}
+//                               </small>
 //                             )}
 //                           </div>
 
 //                           <span>
-//                             {item.status === "blocked"
+//                             {item.status ===
+//                             "blocked"
 //                               ? "Blocked"
 //                               : "Available"}
 //                           </span>
@@ -656,8 +1401,10 @@
 //             <button
 //               type="button"
 //               className="hall-main-book-button"
-//               onClick={() => handleBook()}
-//               disabled={hall.isAvailable === false}
+//               onClick={handleBook}
+//               disabled={
+//                 hall.isAvailable === false
+//               }
 //             >
 //               {hall.isAvailable === false
 //                 ? "Currently Unavailable"
@@ -673,6 +1420,8 @@
 // export default HallDetails;
 
 
+
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axios";
@@ -686,10 +1435,29 @@ const HallDetails = () => {
   const [packages, setPackages] = useState([]);
   const [availability, setAvailability] = useState([]);
 
+  // Reviews
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsError, setReviewsError] = useState("");
+  const [reviewRatingFilter, setReviewRatingFilter] = useState("");
+  const [reviewPage, setReviewPage] = useState(1);
+  const [reviewPagination, setReviewPagination] = useState({
+    page: 1,
+    limit: 5,
+    total: 0,
+    pages: 0,
+  });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [activeImage, setActiveImage] = useState(0);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Fetch Hall Details
+  |--------------------------------------------------------------------------
+  */
 
   useEffect(() => {
     const fetchHallDetails = async () => {
@@ -697,16 +1465,22 @@ const HallDetails = () => {
         setLoading(true);
         setError("");
 
-        const [hallResponse, packagesResponse, availabilityResponse] =
-          await Promise.all([
-            api.get(`/halls/public/${id}`),
-            api.get(`/packages/public/hall/${id}`),
-            api.get(`/availability/public/hall/${id}`),
-          ]);
+        const [
+          hallResponse,
+          packagesResponse,
+          availabilityResponse,
+        ] = await Promise.all([
+          api.get(`/halls/public/${id}`),
+          api.get(`/packages/public/hall/${id}`),
+          api.get(`/availability/public/hall/${id}`),
+        ]);
 
         /*
-          Hall API
+        |----------------------------------------------------------------------
+        | Hall
+        |----------------------------------------------------------------------
         */
+
         if (hallResponse.data?.success) {
           setHall(hallResponse.data.hall);
         } else {
@@ -714,8 +1488,11 @@ const HallDetails = () => {
         }
 
         /*
-          Packages API
+        |----------------------------------------------------------------------
+        | Packages
+        |----------------------------------------------------------------------
         */
+
         const packageData = packagesResponse.data;
 
         if (packageData?.success) {
@@ -730,8 +1507,11 @@ const HallDetails = () => {
         }
 
         /*
-          Availability API
+        |----------------------------------------------------------------------
+        | Availability
+        |----------------------------------------------------------------------
         */
+
         const availabilityData = availabilityResponse.data;
 
         if (availabilityData?.success) {
@@ -763,8 +1543,76 @@ const HallDetails = () => {
   }, [id]);
 
   /*
-    Build gallery images
+  |--------------------------------------------------------------------------
+  | Fetch Reviews
+  |--------------------------------------------------------------------------
   */
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (!id) return;
+
+      try {
+        setReviewsLoading(true);
+        setReviewsError("");
+
+        const params = {
+          page: reviewPage,
+          limit: 5,
+        };
+
+        if (reviewRatingFilter) {
+          params.rating = reviewRatingFilter;
+        }
+
+        const response = await api.get(
+          `/reviews/hall/${id}`,
+          {
+            params,
+          }
+        );
+
+        const data = response.data;
+
+        if (!data?.success) {
+          throw new Error(
+            data?.message || "Failed to load reviews"
+          );
+        }
+
+        setReviews(
+          Array.isArray(data.reviews)
+            ? data.reviews
+            : []
+        );
+
+        if (data.pagination) {
+          setReviewPagination(data.pagination);
+        }
+      } catch (err) {
+        console.error("Hall reviews error:", err);
+
+        setReviewsError(
+          err.response?.data?.message ||
+            err.message ||
+            "Failed to load reviews."
+        );
+
+        setReviews([]);
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [id, reviewPage, reviewRatingFilter]);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Gallery
+  |--------------------------------------------------------------------------
+  */
+
   const galleryImages = useMemo(() => {
     if (!hall) return [];
 
@@ -776,7 +1624,10 @@ const HallDetails = () => {
 
     if (Array.isArray(hall.images)) {
       hall.images.forEach((image) => {
-        if (image?.url && !images.includes(image.url)) {
+        if (
+          image?.url &&
+          !images.includes(image.url)
+        ) {
           images.push(image.url);
         }
       });
@@ -786,18 +1637,29 @@ const HallDetails = () => {
   }, [hall]);
 
   /*
-    Format prices
+  |--------------------------------------------------------------------------
+  | Prices
+  |--------------------------------------------------------------------------
   */
+
   const formatPrice = (price) => {
-    if (price === null || price === undefined) {
+    if (
+      price === null ||
+      price === undefined
+    ) {
       return "Price on request";
     }
 
-    return `${Number(price).toLocaleString("en-US")} EGP`;
+    return `${Number(price).toLocaleString(
+      "en-US"
+    )} EGP`;
   };
 
   const getPackagePrice = (pkg) => {
-    if (pkg.price === undefined || pkg.price === null) {
+    if (
+      pkg.price === undefined ||
+      pkg.price === null
+    ) {
       return "Price on request";
     }
 
@@ -805,26 +1667,11 @@ const HallDetails = () => {
   };
 
   /*
-    Check availability
+  |--------------------------------------------------------------------------
+  | Booking
+  |--------------------------------------------------------------------------
   */
-  const isDateAvailable = (date) => {
-    const item = availability.find(
-      (entry) => String(entry.date).slice(0, 10) === date
-    );
 
-    if (!item) return true;
-
-    return item.status === "available";
-  };
-
-  /*
-    Booking flow:
-    Hall Details
-        ↓
-    Choose Package
-        ↓
-    Booking
-  */
   const handleBook = () => {
     navigate(`/halls/${id}/packages`, {
       state: {
@@ -834,36 +1681,90 @@ const HallDetails = () => {
   };
 
   /*
-    Loading state
+  |--------------------------------------------------------------------------
+  | Helpers
+  |--------------------------------------------------------------------------
   */
+
+  const formatReviewDate = (date) => {
+    if (!date) return "";
+
+    return new Date(date).toLocaleDateString(
+      "en-EG",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
+    );
+  };
+
+  const renderStars = (rating) => {
+    return (
+      <div className="hall-review-stars">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={
+              star <= rating
+                ? "filled"
+                : ""
+            }
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Loading
+  |--------------------------------------------------------------------------
+  */
+
   if (loading) {
     return (
       <div className="hall-details-page">
         <div className="hall-details-loading">
           <div className="hall-details-spinner" />
-          <p>Loading wedding hall...</p>
+
+          <p>
+            Loading wedding hall...
+          </p>
         </div>
       </div>
     );
   }
 
   /*
-    Error state
+  |--------------------------------------------------------------------------
+  | Error
+  |--------------------------------------------------------------------------
   */
+
   if (error || !hall) {
     return (
       <div className="hall-details-page">
         <div className="hall-details-state">
-          <div className="hall-details-state-icon">!</div>
+          <div className="hall-details-state-icon">
+            !
+          </div>
 
-          <h2>Wedding Hall Not Found</h2>
+          <h2>
+            Wedding Hall Not Found
+          </h2>
 
           <p>
             {error ||
               "We couldn't find the wedding hall you're looking for."}
           </p>
 
-          <Link to="/halls" className="hall-back-button">
+          <Link
+            to="/halls"
+            className="hall-back-button"
+          >
             ← Back to Wedding Halls
           </Link>
         </div>
@@ -871,43 +1772,57 @@ const HallDetails = () => {
     );
   }
 
-  const rating = hall.rating?.average || 0;
-  const ratingCount = hall.rating?.count || 0;
+  const rating =
+    hall.rating?.average || 0;
+
+  const ratingCount =
+    hall.rating?.count || 0;
 
   return (
     <div className="hall-details-page">
       <div className="hall-details-container">
-        {/* =========================
+
+        {/* =========================================================
             BREADCRUMB
-        ========================= */}
+        ========================================================= */}
 
         <div className="hall-breadcrumb">
           <Link to="/">Home</Link>
 
           <span>/</span>
 
-          <Link to="/halls">Wedding Halls</Link>
+          <Link to="/halls">
+            Wedding Halls
+          </Link>
 
           <span>/</span>
 
-          <strong>{hall.name}</strong>
+          <strong>
+            {hall.name}
+          </strong>
         </div>
 
-        {/* =========================
+        {/* =========================================================
             GALLERY
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-gallery-section">
           <div className="hall-gallery-main">
             {galleryImages.length > 0 ? (
               <img
-                src={galleryImages[activeImage]}
+                src={
+                  galleryImages[
+                    activeImage
+                  ]
+                }
                 alt={hall.name}
               />
             ) : (
               <div className="hall-gallery-placeholder">
                 <span>W</span>
-                <p>Wedding Venue</p>
+                <p>
+                  Wedding Venue
+                </p>
               </div>
             )}
 
@@ -925,7 +1840,8 @@ const HallDetails = () => {
                   onClick={() =>
                     setActiveImage(
                       activeImage === 0
-                        ? galleryImages.length - 1
+                        ? galleryImages.length -
+                            1
                         : activeImage - 1
                     )
                   }
@@ -938,7 +1854,9 @@ const HallDetails = () => {
                   className="gallery-arrow gallery-arrow-right"
                   onClick={() =>
                     setActiveImage(
-                      activeImage === galleryImages.length - 1
+                      activeImage ===
+                        galleryImages.length -
+                          1
                         ? 0
                         : activeImage + 1
                     )
@@ -952,28 +1870,37 @@ const HallDetails = () => {
 
           {galleryImages.length > 1 && (
             <div className="hall-gallery-thumbnails">
-              {galleryImages.map((image, index) => (
-                <button
-                  type="button"
-                  key={image}
-                  className={`hall-gallery-thumbnail ${
-                    activeImage === index ? "active" : ""
-                  }`}
-                  onClick={() => setActiveImage(index)}
-                >
-                  <img
-                    src={image}
-                    alt={`${hall.name} ${index + 1}`}
-                  />
-                </button>
-              ))}
+              {galleryImages.map(
+                (image, index) => (
+                  <button
+                    type="button"
+                    key={image}
+                    className={`hall-gallery-thumbnail ${
+                      activeImage ===
+                      index
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setActiveImage(index)
+                    }
+                  >
+                    <img
+                      src={image}
+                      alt={`${hall.name} ${
+                        index + 1
+                      }`}
+                    />
+                  </button>
+                )
+              )}
             </div>
           )}
         </section>
 
-        {/* =========================
+        {/* =========================================================
             MAIN INFO
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-main-info">
           <div className="hall-main-info-left">
@@ -987,19 +1914,26 @@ const HallDetails = () => {
               <span>⌖</span>
 
               <span>
-                {hall.address || hall.area || hall.city}
+                {hall.address ||
+                  hall.area ||
+                  hall.city}
 
-                {hall.city && hall.address
+                {hall.city &&
+                hall.address
                   ? `, ${hall.city}`
                   : ""}
               </span>
             </div>
 
             <div className="hall-details-rating">
-              <span className="rating-star">★</span>
+              <span className="rating-star">
+                ★
+              </span>
 
               <strong>
-                {rating > 0 ? rating.toFixed(1) : "New"}
+                {rating > 0
+                  ? rating.toFixed(1)
+                  : "New"}
               </strong>
 
               {ratingCount > 0 && (
@@ -1014,19 +1948,25 @@ const HallDetails = () => {
           </div>
 
           <div className="hall-main-info-price">
-            <span>STARTING FROM</span>
+            <span>
+              STARTING FROM
+            </span>
 
             <strong>
-              {formatPrice(hall.startingPrice)}
+              {formatPrice(
+                hall.startingPrice
+              )}
             </strong>
 
-            <small>per event</small>
+            <small>
+              per event
+            </small>
           </div>
         </section>
 
-        {/* =========================
+        {/* =========================================================
             QUICK INFO
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-quick-info">
           <div className="hall-quick-item">
@@ -1038,8 +1978,12 @@ const HallDetails = () => {
               <span>Capacity</span>
 
               <strong>
-                {hall.capacity?.min || 0} -{" "}
-                {hall.capacity?.max || 0} Guests
+                {hall.capacity?.min ||
+                  0}{" "}
+                -{" "}
+                {hall.capacity?.max ||
+                  0}{" "}
+                Guests
               </strong>
             </div>
           </div>
@@ -1053,7 +1997,8 @@ const HallDetails = () => {
               <span>Location</span>
 
               <strong>
-                {hall.city || "Not specified"}
+                {hall.city ||
+                  "Not specified"}
               </strong>
             </div>
           </div>
@@ -1068,7 +2013,9 @@ const HallDetails = () => {
 
               <strong>
                 {rating > 0
-                  ? `${rating.toFixed(1)} / 5`
+                  ? `${rating.toFixed(
+                      1
+                    )} / 5`
                   : "New"}
               </strong>
             </div>
@@ -1091,9 +2038,9 @@ const HallDetails = () => {
           </div>
         </section>
 
-        {/* =========================
+        {/* =========================================================
             DESCRIPTION + FEATURES
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-content-grid">
           <div className="hall-about">
@@ -1115,7 +2062,9 @@ const HallDetails = () => {
                 <span>⌖</span>
 
                 <div>
-                  <small>ADDRESS</small>
+                  <small>
+                    ADDRESS
+                  </small>
 
                   <strong>
                     {hall.address}
@@ -1134,18 +2083,23 @@ const HallDetails = () => {
               What This Venue Offers
             </h2>
 
-            {hall.features?.length > 0 ? (
+            {hall.features?.length >
+            0 ? (
               <div className="hall-details-features">
-                {hall.features.map((feature) => (
-                  <div
-                    className="hall-detail-feature"
-                    key={feature}
-                  >
-                    <span>✓</span>
+                {hall.features.map(
+                  (feature) => (
+                    <div
+                      className="hall-detail-feature"
+                      key={feature}
+                    >
+                      <span>✓</span>
 
-                    <p>{feature}</p>
-                  </div>
-                ))}
+                      <p>
+                        {feature}
+                      </p>
+                    </div>
+                  )
+                )}
               </div>
             ) : (
               <p className="hall-no-data">
@@ -1155,9 +2109,9 @@ const HallDetails = () => {
           </div>
         </section>
 
-        {/* =========================
+        {/* =========================================================
             PACKAGES
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-packages-section">
           <div className="hall-section-heading">
@@ -1171,8 +2125,9 @@ const HallDetails = () => {
               </h2>
 
               <p>
-                Select a package that matches your
-                celebration and your needs.
+                Select a package that matches
+                your celebration and your
+                needs.
               </p>
             </div>
           </div>
@@ -1200,7 +2155,9 @@ const HallDetails = () => {
                   {pkg.image?.url && (
                     <div className="hall-package-image">
                       <img
-                        src={pkg.image.url}
+                        src={
+                          pkg.image.url
+                        }
                         alt={pkg.name}
                       />
                     </div>
@@ -1208,9 +2165,12 @@ const HallDetails = () => {
 
                   <div className="hall-package-body">
                     <div className="hall-package-top">
-                      <h3>{pkg.name}</h3>
+                      <h3>
+                        {pkg.name}
+                      </h3>
 
-                      {pkg.isActive === false && (
+                      {pkg.isActive ===
+                        false && (
                         <span className="package-inactive">
                           Unavailable
                         </span>
@@ -1229,17 +2189,23 @@ const HallDetails = () => {
                       </small>
 
                       <strong>
-                        {getPackagePrice(pkg)}
+                        {getPackagePrice(
+                          pkg
+                        )}
                       </strong>
                     </div>
 
                     {(pkg.minGuests ||
                       pkg.maxGuests) && (
                       <div className="hall-package-detail">
-                        <span>Guests</span>
+                        <span>
+                          Guests
+                        </span>
 
                         <strong>
-                          {pkg.minGuests || 0} -{" "}
+                          {pkg.minGuests ||
+                            0}{" "}
+                          -{" "}
                           {pkg.maxGuests ||
                             "Unlimited"}
                         </strong>
@@ -1248,23 +2214,40 @@ const HallDetails = () => {
 
                     {pkg.durationHours && (
                       <div className="hall-package-detail">
-                        <span>Duration</span>
+                        <span>
+                          Duration
+                        </span>
 
                         <strong>
-                          {pkg.durationHours} hours
+                          {
+                            pkg.durationHours
+                          }{" "}
+                          hours
                         </strong>
                       </div>
                     )}
 
-                    {pkg.features?.length > 0 && (
+                    {pkg.features?.length >
+                      0 && (
                       <div className="hall-package-features">
                         {pkg.features
                           .slice(0, 5)
-                          .map((feature) => (
-                            <span key={feature}>
-                              ✓ {feature}
-                            </span>
-                          ))}
+                          .map(
+                            (
+                              feature
+                            ) => (
+                              <span
+                                key={
+                                  feature
+                                }
+                              >
+                                ✓{" "}
+                                {
+                                  feature
+                                }
+                              </span>
+                            )
+                          )}
                       </div>
                     )}
 
@@ -1272,11 +2255,15 @@ const HallDetails = () => {
                       type="button"
                       className="hall-package-book"
                       disabled={
-                        pkg.isActive === false
+                        pkg.isActive ===
+                        false
                       }
-                      onClick={handleBook}
+                      onClick={
+                        handleBook
+                      }
                     >
-                      {pkg.isActive === false
+                      {pkg.isActive ===
+                      false
                         ? "Currently Unavailable"
                         : "Choose This Package"}
                     </button>
@@ -1287,9 +2274,9 @@ const HallDetails = () => {
           )}
         </section>
 
-        {/* =========================
+        {/* =========================================================
             AVAILABILITY
-        ========================= */}
+        ========================================================= */}
 
         <section className="hall-availability-section">
           <div className="hall-section-heading">
@@ -1316,13 +2303,14 @@ const HallDetails = () => {
 
                 <div>
                   <strong>
-                    No blocked dates currently listed
+                    No blocked dates currently
+                    listed
                   </strong>
 
                   <p>
-                    You can continue to the booking
-                    process and select your preferred
-                    event date.
+                    You can continue to the
+                    booking process and select
+                    your preferred event date.
                   </p>
                 </div>
               </div>
@@ -1345,18 +2333,24 @@ const HallDetails = () => {
                     .slice()
                     .sort(
                       (a, b) =>
-                        new Date(a.date) -
-                        new Date(b.date)
+                        new Date(
+                          a.date
+                        ) -
+                        new Date(
+                          b.date
+                        )
                     )
                     .map((item) => {
-                      const date = new Date(
-                        item.date
-                      );
+                      const date =
+                        new Date(
+                          item.date
+                        );
 
                       return (
                         <div
                           className={`availability-item ${
-                            item.status === "blocked"
+                            item.status ===
+                            "blocked"
                               ? "blocked"
                               : "available"
                           }`}
@@ -1370,17 +2364,22 @@ const HallDetails = () => {
                               {date.toLocaleDateString(
                                 "en-US",
                                 {
-                                  weekday: "short",
-                                  month: "short",
+                                  weekday:
+                                    "short",
+                                  month:
+                                    "short",
                                   day: "numeric",
-                                  year: "numeric",
+                                  year:
+                                    "numeric",
                                 }
                               )}
                             </strong>
 
                             {item.reason && (
                               <small>
-                                {item.reason}
+                                {
+                                  item.reason
+                                }
                               </small>
                             )}
                           </div>
@@ -1403,14 +2402,257 @@ const HallDetails = () => {
               className="hall-main-book-button"
               onClick={handleBook}
               disabled={
-                hall.isAvailable === false
+                hall.isAvailable ===
+                false
               }
             >
-              {hall.isAvailable === false
+              {hall.isAvailable ===
+              false
                 ? "Currently Unavailable"
                 : "Book This Wedding Hall"}
             </button>
           </div>
+        </section>
+
+        {/* =========================================================
+            REVIEWS
+        ========================================================= */}
+
+        <section className="hall-reviews-section">
+          <div className="hall-section-heading">
+            <div>
+              <span className="hall-section-label">
+                CUSTOMER REVIEWS
+              </span>
+
+              <h2>
+                What Couples Say About This Venue
+              </h2>
+
+              <p>
+                Read reviews from customers who
+                celebrated their special day here.
+              </p>
+            </div>
+          </div>
+
+          {/* Rating Summary */}
+
+          <div className="hall-reviews-summary">
+            <div className="hall-reviews-summary-main">
+              <strong>
+                {rating > 0
+                  ? rating.toFixed(1)
+                  : "0.0"}
+              </strong>
+
+              <div>
+                <div className="hall-summary-stars">
+                  {[1, 2, 3, 4, 5].map(
+                    (star) => (
+                      <span
+                        key={star}
+                        className={
+                          star <=
+                          Math.round(
+                            rating
+                          )
+                            ? "filled"
+                            : ""
+                        }
+                      >
+                        ★
+                      </span>
+                    )
+                  )}
+                </div>
+
+                <span>
+                  {ratingCount}{" "}
+                  {ratingCount === 1
+                    ? "review"
+                    : "reviews"}
+                </span>
+              </div>
+            </div>
+
+            <div className="hall-review-filter">
+              <label htmlFor="review-rating-filter">
+                Filter by rating
+              </label>
+
+              <select
+                id="review-rating-filter"
+                value={
+                  reviewRatingFilter
+                }
+                onChange={(event) => {
+                  setReviewPage(1);
+
+                  setReviewRatingFilter(
+                    event.target.value
+                  );
+                }}
+              >
+                <option value="">
+                  All Ratings
+                </option>
+
+                <option value="5">
+                  5 Stars
+                </option>
+
+                <option value="4">
+                  4 Stars
+                </option>
+
+                <option value="3">
+                  3 Stars
+                </option>
+
+                <option value="2">
+                  2 Stars
+                </option>
+
+                <option value="1">
+                  1 Star
+                </option>
+              </select>
+            </div>
+          </div>
+
+          {/* Reviews */}
+
+          {reviewsLoading ? (
+            <div className="hall-reviews-loading">
+              <div className="hall-reviews-spinner" />
+
+              <p>
+                Loading reviews...
+              </p>
+            </div>
+          ) : reviewsError ? (
+            <div className="hall-reviews-empty">
+              <span>!</span>
+
+              <h3>
+                Unable to load reviews
+              </h3>
+
+              <p>
+                {reviewsError}
+              </p>
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="hall-reviews-empty">
+              <span>★</span>
+
+              <h3>
+                No reviews yet
+              </h3>
+
+              <p>
+                Be the first customer to share
+                your experience with this venue.
+              </p>
+            </div>
+          ) : (
+            <div className="hall-reviews-list">
+              {reviews.map((review) => (
+                <article
+                  className="hall-review-card"
+                  key={review._id}
+                >
+                  <div className="hall-review-top">
+                    <div className="hall-review-customer">
+                      <div className="hall-review-avatar">
+                        {(
+                          review.customer?.name ||
+                          "C"
+                        )
+                          .charAt(0)
+                          .toUpperCase()}
+                      </div>
+
+                      <div>
+                        <strong>
+                          {review.customer?.name ||
+                            "Customer"}
+                        </strong>
+
+                        <span>
+                          {formatReviewDate(
+                            review.createdAt
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    {renderStars(
+                      review.rating
+                    )}
+                  </div>
+
+                  {review.comment && (
+                    <p className="hall-review-comment">
+                      "{review.comment}"
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+
+          {!reviewsLoading &&
+            reviewPagination.pages > 1 && (
+              <div className="hall-reviews-pagination">
+                <button
+                  type="button"
+                  disabled={
+                    reviewPage <= 1
+                  }
+                  onClick={() =>
+                    setReviewPage(
+                      (current) =>
+                        current - 1
+                    )
+                  }
+                >
+                  ← Previous
+                </button>
+
+                <span>
+                  Page{" "}
+                  <strong>
+                    {reviewPage}
+                  </strong>{" "}
+                  of{" "}
+                  <strong>
+                    {
+                      reviewPagination.pages
+                    }
+                  </strong>
+                </span>
+
+                <button
+                  type="button"
+                  disabled={
+                    reviewPage >=
+                    reviewPagination.pages
+                  }
+                  onClick={() =>
+                    setReviewPage(
+                      (current) =>
+                        current + 1
+                    )
+                  }
+                >
+                  Next →
+                </button>
+              </div>
+            )}
         </section>
       </div>
     </div>
@@ -1418,4 +2660,3 @@ const HallDetails = () => {
 };
 
 export default HallDetails;
-
